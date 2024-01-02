@@ -1,0 +1,59 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  background-color: transparent;
+  width: 4px;
+  height: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #414141;
+  border-radius: 10px;
+}
+
+.notesHeading {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  line-height: 40px;
+}
+
+.notesParagraph {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 12;
+  line-clamp: 12;
+  -webkit-box-orient: vertical;
+}
+
+.notesParagraphList {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+@media screen and (max-width: 640px) {
+  .notesParagraphList {
+    -webkit-line-clamp: 12;
+    line-clamp: 12;
+  }
+  .notesHeight {
+    height: 250px;
+  }
+  .notesHeading {
+    line-height: 36px;
+  }
+}

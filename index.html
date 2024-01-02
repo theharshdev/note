@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Tailwind CSS Command -->
+  <!-- 
+    npx tailwindcss -i ./src/input.css -o ./dist/assets/css/output.css --watch 
+  -->
+
+  <head>
+    <!-- Required Meta Tags -->
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <!-- Google Font CDN Links -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons CSS File Link -->
+    <link href="assets/css/bootstrap-icon.css" rel="stylesheet" />
+    <!-- Tailwind CSS File Link -->
+    <link href="assets/css/output.css" rel="stylesheet" />
+    <!-- Custom CSS File Link -->
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <title>My Notes</title>
+  </head>
+
+  <body class="bg-white dark:bg-zinc-900">
+    <!-- Popup Form -->
+    <div
+      id="addNotesPopup"
+      class="p-3 z-[99] fixed top-0 left-0 w-full h-screen justify-center items-center bg-black/50 hidden transition-all"
+    >
+      <div
+        class="lg:w-[80%] md:w-[85%] sm:w-[90%] w-full overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 sm:p-8 p-5 border-2 border-zinc-200 dark:border-zinc-700"
+        style="box-shadow: 5px 5px 50px black"
+      >
+        <textarea
+          id="notesInput"
+          placeholder="Create your note..."
+          class="block w-full h-96 bg-zinc-100 dark:bg-zinc-900 text-sm text-zinc-800 dark:text-white placeholder:text-zinc-800 border dark:border-0 dark:placeholder:text-white rounded-xl resize-none sm:p-5 p-3 outline-none"
+        ></textarea>
+        <div class="flex justify-between items-center mt-3">
+          <div>
+            <button
+              type="button"
+              class="text-zinc-800 dark:text-white leading-3 text-xs flex items-center"
+              id="copyNotes"
+            >
+              <i class="bi bi-clipboard text-lg"></i>
+            </button>
+          </div>
+          <div class="flex items-center">
+            <button
+              id="closeAddNotesPopup"
+              type="button"
+              class="text-white bg-zinc-700 sm:text-sm text-xs font-normal hover:bg-zinc-900 transition-all rounded-full py-2 px-5"
+            >
+              Cancel
+            </button>
+            <button
+              id="saveNotesBtn"
+              type="button"
+              class="text-white bg-zinc-700 sm:text-sm text-xs font-normal hover:bg-zinc-900 transition-all rounded-full py-2 px-5 ms-2"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Delete popup form -->
+    <div
+      id="deletePopupBox"
+      class="p-3 z-[99] fixed top-0 left-0 w-full h-screen hidden justify-center items-center bg-black/50 transition-all"
+    >
+      <div
+        class="sm:w-[400px] w-full overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 sm:p-8 p-5 border-2 border-zinc-200 dark:border-zinc-700"
+        style="box-shadow: 5px 5px 50px black"
+      >
+        <h3
+          class="sm:text-base text-sm font-medium text-zinc-700 dark:text-white"
+        >
+          Are you sure about this? You can't recover it, if you confirm!
+        </h3>
+        <div class="flex justify-end mt-7">
+          <button
+            id="cancelDelete"
+            type="button"
+            class="text-white bg-zinc-700 sm:text-sm text-xs font-normal hover:bg-zinc-900 transition-all rounded-full py-2 px-5"
+          >
+            Cancel
+          </button>
+          <button
+            id="confirmDelete"
+            type="button"
+            class="text-white bg-red-600 sm:text-sm text-xs font-normal hover:bg-red-700 transition-all rounded-full py-2 px-5 ms-2"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Navbar section -->
+    <main
+      class="fixed top-0 left-0 w-full z-50 border-b border-zinc-500/20 dark:border-zinc-700"
+    >
+      <header class="bg-white dark:bg-zinc-800">
+        <nav
+          class="flex justify-between items-center flex-wrap p-4 container mx-auto relative"
+        >
+          <h3 class="text-zinc-600/80 dark:text-white text-4xl leading-3">
+            <i class="bi bi-book"></i>
+          </h3>
+          <div class="flex items-center">
+            <!-- Searchbar -->
+            <div
+              id="searchBar"
+              class="lg:w-96 md:w-80 sm:w-72 items-center sm:me-3 me-0 sm:static absolute top-2 left-2 right-2 sm:flex hidden"
+            >
+              <input
+                id="searchBarInput"
+                type="text"
+                placeholder="Search your notes here..."
+                class="block w-full outline-none border dark:border-zinc-700 border-zinc-400/20 rounded-full sm:py-3 py-4 ps-5 pe-10 text-xs font-medium text-zinc-700 dark:text-white sm:bg-transparent bg-zinc-100 dark:sm:bg-zinc-800/40 dark:bg-zinc-800 dark:placeholder:text-white placeholder:text-zinc-700 sm:focus:bg-zinc-200/20 dark:sm:focus:bg-zinc-700/40 transition-all"
+              />
+              <i
+                class="bi bi-search dark:text-white text-zinc-700 w-9 h-9 text-sm sm:flex hidden justify-center items-center -ms-[42px]"
+              ></i>
+              <button
+                type="button"
+                id="closeSearchBar"
+                class="dark:text-white text-zinc-800 w-9 h-9 text-2xl sm:hidden flex justify-center items-center rounded-full -ms-[42px]"
+              >
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
+            <!-- Light/Dark mode toggler -->
+            <div>
+              <button
+                id="modeToggleBtn"
+                type="button"
+                class="dark:text-white text-zinc-800 w-10 h-10 flex justify-center items-center rounded-full lg:hover:bg-zinc-500/10 dark:lg:hover:bg-zinc-500/40 transition-all lg:bg-transparent dark:lg:bg-transparent bg-zinc-200/90 dark:bg-zinc-500/20"
+              >
+                <i
+                  class="bi bi-moon-stars text-sm block dark:hidden leading-3"
+                ></i>
+                <i
+                  class="bi bi-brightness-high text-base hidden dark:block leading-3"
+                ></i>
+              </button>
+            </div>
+            <div class="sm:hidden block ps-2">
+              <!-- Search bar btn -->
+              <button
+                type="button"
+                id="openSearchBar"
+                class="text-zinc-700 dark:text-white w-10 h-10 flex justify-center items-center rounded-full lg:hover:bg-zinc-500 transition-all lg:bg-transparent bg-zinc-200/90 dark:bg-zinc-500/20"
+              >
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </header>
+    </main>
+    <!-- Add Items Button Section -->
+    <section class="pt-16 lg:mt-7 mt-6">
+      <div class="container mx-auto px-3 flex items-center">
+        <div class="w-1/2 flex">
+          <button
+            type="button"
+            class="text-zinc-800 dark:text-white text-xl w-11 h-11 rounded-full overflow-hidden bg-zinc-400/10 dark:bg-zinc-600/30 hover:bg-zinc-400/20 dark:hover:bg-zinc-700/30 leading-3 items-center justify-center transition-all changeView sm:flex hidden"
+          >
+            <i class="bi bi-list-ul relative -z-10"></i>
+          </button>
+        </div>
+        <div class="w-1/2 flex justify-end">
+          <button
+            type="button"
+            id="addNotes"
+            class="text-zinc-800 dark:text-white text-3xl leading-3 flex items-center group"
+          >
+            <span class="block sm:text-sm text-xs font-medium">Add Note</span>
+            <i class="bi bi-plus"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- Notes Cards Section -->
+    <section class="pt-3">
+      <div class="container mx-auto">
+        <!-- Nothing Box -->
+        <div id="nothingBox" class="justify-center hidden min-h-[65vh]">
+          <div
+            class="text-zinc-400/60 dark:text-zinc-600 md:text-3xl text-2xl font-normal text-center sm:w-2/3 w-full px-4 select-none cursor-default mt-8"
+          >
+            <span id="nothingTxt">Nothing here, Create a new note!</span>
+          </div>
+        </div>
+        <!-- Card Container -->
+        <div
+          class="flex flex-wrap md:justify-start justify-center"
+          id="notesCardBox"
+        ></div>
+      </div>
+    </section>
+    <!-- Footer -->
+    <footer
+      class="bg-white dark:bg-zinc-800 px-3 py-4 mt-10 border-t border-zinc-500/20 dark:border-zinc-700"
+    >
+      <div class="container mx-auto">
+        <div class="flex justify-between items-center">
+          <h3 class="text-xs text-zinc-800 dark:text-white font-normal">
+            Harsh Kushwaha
+          </h3>
+          <h3 class="text-xs text-zinc-800 dark:text-white font-normal">
+            All Rights Reserved 2023.
+          </h3>
+        </div>
+      </div>
+    </footer>
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
